@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@font-face {
+    font-family: "DM Sans";
+    src: url("../fonts/DMSans-Regular.ttf") ;
+}
+@tailwind utilities;
