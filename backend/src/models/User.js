@@ -10,6 +10,9 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    image: {
+        type: DataTypes.STRING,
+    },
     hash: {
         type: DataTypes.STRING,
     },
@@ -21,6 +24,7 @@ const User = sequelize.define('User', {
 
 User.associate = function(models) {
     User.hasMany(models.Producto);
+    // User.hasMany(models.MyOrders, { foreignKey: 'userId' }); // 'userId' é a chave estrangeira em MyOrders que se relaciona com User
 };
 
 module.exports = User;

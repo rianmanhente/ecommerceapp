@@ -1,17 +1,20 @@
-import api from "../services/api";
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { AiOutlineHeart, 
 AiFillHeart, 
 AiOutlineArrowRight,
 AiOutlineSearch, 
+AiOutlineShoppingCart
 } from "react-icons/ai";
 import Header from "../components/Header";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import ProductModal from "../components/ProductModal";
 import { getProducts } from "../services/getProducts";
 import { Product } from "../utils/ProductInterface";
+import { getCartUserId } from "../services/getCartUserId";
+import api from "../services/api";
+import { toast } from "react-toastify";
 
 function Home() {
 
@@ -22,6 +25,7 @@ const userName = firstLetter + Letters
 const [products, setProducts] = useState<Product[]>([]);
 const [favorites, setFavorites] = useState<String[]>([]);
 const [isModalVisible, setIsModalVisible] = useState(false);
+const [cartItens, setCartItens] = useState();
 
 const handleFavorites = (id : string) => {
   
@@ -47,12 +51,14 @@ useEffect(() => {
     try {
       const products = await getProducts()
       setProducts(products);
+      console.log(products)
     } catch (err) {
       console.log(err);
     }
+
   };
 
-  fetchProducts();
+  fetchProducts();  
 }, []);
 
 console.log(products)
@@ -66,12 +72,61 @@ useEffect(() => {
 }, []);
 
 
+// aqui eu não criei uma service porque precisaria do id do produto que está sendo clicado
+//mas será que tem alguma forma de mandar isso para a service e fazer ? ctz
+ const handleAddToCart = (productId : string) => {
+  getCartUserId()
+  .then((cartUserId) => {
+    try {
+       api.put(`/cart/${cartUserId}/product/${productId}`)
+       .then(() => {
+        toast.success("Produto adicionado no carrinho!")
+       }).catch((err) => {
+        toast.error("Ocorreu um erro. Tente novamente")
+       })
+    }catch(err) {
+      console.log(err)
+    }
+  })
+
+ }
+
+  
+
+useEffect(() => {
+  getCartUserId()
+  .then(async (cartUserId) => {
+      try {
+          await api.delete(`/cart/${cartUserId}/associetedProducts`)
+          .then((data) => {
+            const itens : any = data
+            setCartItens(itens)
+            console.log(cartItens)
+            if(cartItens === null) {
+              toast.info("Carrinho vazio, coloque um item para acessar o mesmo")
+            }
+          })
+        } catch(err) {
+            console.log(err)
+        }
+  })
+}, [cartItens])
+
+console.log(cartItens)
+
+
+
+
   return (
-    <div>
+    <>
       <Header/>
 
       <div className="p-6">
+          <div className="flex flex-row justify-between">
           <h3 className="text-[18px] ml-4">Oi, {userName}</h3>
+          <a href="/Carrinho"> <AiOutlineShoppingCart size={32} color={"#01CF83"}/></a>
+         
+          </div>
           <h1 className="text-[28px] mt-4 font-sans">
             O que você está procurando hoje ?
           </h1>
@@ -132,17 +187,22 @@ useEffect(() => {
               <>
               <motion.div className="shadow-sm rounded-xl mt-12 bg-white min-w-[148px] flex p-2 flex-col ">
               <ProductModal visible={isModalVisible} name={name} image={image} price={price} id={id} key={id} />
-                  <div className="">
+                  <div className="flex flex-row justify-between p-2">
                     <div>
                       <button onClick={() => handleFavorites(id)}>
                         {favorites.includes(id) ? (
-                          <AiFillHeart size={20} color={"#01CF83"} />
+                          <AiFillHeart size={23} color={"#01CF83"} />
                         ) : (
-                          <AiOutlineHeart size={20} color={"#01CF83"} />
+                          <AiOutlineHeart size={23} color={"#01CF83"} />
                         )}
                       </button>
+                      </div>                  
+                    <div>
+                      <button onClick={() => handleAddToCart(id)}>
+                          <AiOutlineShoppingCart size={23} color={"#01CF83"}/>
+                      </button>
                     </div>
-                  </div>  
+                    </div>
                   <div onClick={() => handleOpenModal(id)}>
                     <img
                       className="mt-3 p-[6px]"
@@ -179,7 +239,7 @@ useEffect(() => {
       </section> 
 
       <Footer/>
-    </div>
+    </>
   );
 }
 

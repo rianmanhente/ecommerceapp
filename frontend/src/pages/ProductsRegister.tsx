@@ -12,6 +12,10 @@ function ProductsRegister() {
     const [productCategory, setProductCategory] = useState('');
     const [selectedFile, setSelectedFile] = useState('');
 
+    const userName = sessionStorage.getItem("name")
+    console.log(userName)
+
+
     const handlePostProducts =  (e : any) => {
         e.preventDefault();
 
@@ -20,8 +24,9 @@ function ProductsRegister() {
         dataProducts.append("price", productPrice);
         dataProducts.append("category", productCategory);
         dataProducts.append("image", selectedFile);
-   
-        api.post('/product', dataProducts)
+
+        
+        api.post(`/product/user/${userName}`, dataProducts)
         .then((res) => {
             toast.success("Produto cadastrado com sucesso")
         })
@@ -62,6 +67,7 @@ function ProductsRegister() {
                     </div>
                 </form>
             </main>
+            
             <Footer/>   
         </>
     )
