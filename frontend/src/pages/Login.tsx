@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { toast } from "react-toastify";
+import { cartAssociated } from "../services/cartAssociated";
 
 function Login() {
 
@@ -29,6 +30,8 @@ function Login() {
                 toast.error("Ocorreu um erro. Tente novamente")
             }
         })
+        
+        cartAssociated()
     }
 
     return(

@@ -1,5 +1,7 @@
 const DataTypes = require("sequelize");
 const sequelize = require("../config/sequelize");
+const CartItem = require('./CartItem'); 
+
 
 const Producto = sequelize.define('Producto', {
     name: {
@@ -10,35 +12,24 @@ const Producto = sequelize.define('Producto', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    description:{
+    category:{
         type: DataTypes.STRING,
         allowNull:false
+    },
+    quantity: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0, // Defina um valor padrão para a quantidade
     },
     image:{
          type: DataTypes.STRING,
          allowNull:false
     },  
-    id: {
-        type: DataTypes.STRING,
-        primaryKey: true
-    }
-    // the_amount: {
-        //     type: DataTypes.STRING,
-        //     allowNull: false
-        // },
-        // evaluation: {
-        //     type: DataTypes.STRING,
-        //     allowNull: false
-        // },
-        // payment_method: {
-        //         type: DataTypes.STRING,
-        //         allowNull: false
-        // },
 });
 
 Producto.associate = function(models) {
     Producto.belongsTo(models.User);
     Producto.belongsTo(models.Cart);
+    // Producto.belongsTo(models.CartItem);
 };
 
 

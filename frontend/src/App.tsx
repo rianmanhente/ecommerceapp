@@ -7,6 +7,7 @@ import { BrowserRouter, Routes , Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MyProducts from './pages/MyProducts';
+import Cart from './pages/Cart';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path= "/home" element={ < Home />} />
         <Route path="/registroprodutos" element={ < ProductsRegister />} />
         <Route path="/meusProdutos" element={ < MyProducts />} />
+        <Route path="/carrinho" element={ < Cart />} />
         </Routes>
       </BrowserRouter>
     </>

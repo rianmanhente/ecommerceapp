@@ -6,18 +6,14 @@ const Cart = sequelize.define('Cart', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    phone_number: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
 });
 
 Cart.associate = function(models) {
-    Cart.hasMany(models.Producto);
+    Cart.belongsTo(models.User)
+    Cart.hasMany(models.Producto)
+    // Cart.hasMany(models.CartItem)
+
 };
+
 
 module.exports = Cart;

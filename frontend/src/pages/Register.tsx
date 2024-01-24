@@ -92,13 +92,13 @@ function Register() {
             <form onSubmit={handleSubmitForm} className="bg-white w-[24rem] flex flex-col m-auto mt-[2.8rem] h-[42rem] rounded-xl shadow-lg">
                 <h2 className="mt-[40px] text-xl text-tertiary text-center">Cadastre-se</h2>
                 <div className="flex justify-center mt-[2.8rem]">
-                    <input value={name}
-                        required
-                        pattern="^[A-Za-z]*$"
-                        onChange={(e: any) => setName(e.target.value)}
-                        className="bg-gray-100 placeholder-gray-500 outline-none  h-[2.8rem] rounded-md w-[20rem]"
-                        type="text"
-                        placeholder="nome" />
+		            <input value={name}
+		                required
+		                pattern="^[A-Za-z]*$"
+		                onChange={(e: any) => setName(e.target.value)}
+		                className="bg-gray-100 placeholder-gray-500 outline-none  h-[2.8rem] rounded-md w-[20rem]"
+		                type="text"
+		                placeholder="nome" />
                 </div>
                 <div className="flex justify-center mt-[1.4rem]">
                     <input
